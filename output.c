@@ -1211,6 +1211,7 @@ print_html_summary (FILE * fp, GLog * logger)
 
   print_html_begin_tr (fp, 0);
   print_html_summary_field (fp, logger->process, T_REQUESTS);
+  print_html_summary_field (fp, get_ht_size (ht_unique_ips), T_UNIQUE_IPS);
   print_html_summary_field (fp, get_ht_size (ht_unique_visitors), T_UNIQUE_VIS);
   print_html_summary_field (fp, get_ht_size (ht_referrers), T_REFERRER);
 

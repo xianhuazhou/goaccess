@@ -276,6 +276,7 @@ reset_struct (GLog * logger)
 {
   logger->invalid = 0;
   logger->process = 0;
+  logger->ips = 0;
   logger->resp_size = 0LL;
 }
 
@@ -362,7 +363,7 @@ decode_url (char *url)
   return trim_str (out);
 }
 
-/* Process keyphrases from Google search, cache, and translate.
+/* Process keyphrases from Google search, cache, translate and others.
  * Note that the referer hasn't been decoded at the entry point
  * since there could be '&' within the search query. */
 static int
@@ -373,7 +374,11 @@ process_keyphrases (char *ref)
 
   if (!(strstr (ref, "http://www.google.")) &&
       !(strstr (ref, "http://webcache.googleusercontent.com/")) &&
-      !(strstr (ref, "http://translate.googleusercontent.com/")))
+      !(strstr (ref, "http://translate.googleusercontent.com/")) &&
+      !(strstr (ref, "http://www.so.com/")) &&
+      !(strstr (ref, "http://www.soso.com/")) &&
+      !(strstr (ref, "http://www.sogou.com/")) &&
+      !(strstr (ref, "http://www.baidu.com/")))
     return 1;
 
   /* webcache.googleusercontent */
@@ -395,6 +400,21 @@ process_keyphrases (char *ref)
   else if ((r = strstr (ref, "%26q%3D")) != NULL ||
            (r = strstr (ref, "%3Fq%3D")) != NULL)
     encoded = 1, r += 7;
+
+  else if ((r = strstr (ref, "&wd=")) != NULL ||
+           (r = strstr (ref, "?wd=")) != NULL)
+    r += 4;
+  else if ((r = strstr (ref, "%26wd%3D")) != NULL ||
+           (r = strstr (ref, "%3Fwd%3D")) != NULL)
+    encoded = 1, r += 8;
+
+  else if ((r = strstr (ref, "&query=")) != NULL ||
+           (r = strstr (ref, "?query=")) != NULL)
+    r += 7;
+  else if ((r = strstr (ref, "%26query%3D")) != NULL ||
+           (r = strstr (ref, "%3Fquery%3D")) != NULL)
+    encoded = 1, r += 11;
+
   else
     return 1;
 
@@ -463,6 +483,8 @@ process_unique_data (char *host, char *date, char *agent)
   snprintf (visitor_key, sizeof (visitor_key), "%s|%s|%s", host, date, a);
   (visitor_key)[sizeof (visitor_key) - 1] = '\0';
   free (a);
+
+  process_generic_data (ht_unique_ips, host);
 
   /* Check if the unique visitor key exists, if not,
    * process hit as unique visitor. Includes, BROWSERS, OSs, VISITORS. */

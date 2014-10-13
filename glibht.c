@@ -70,6 +70,7 @@ GHashTable *ht_requests_static = NULL;
 GHashTable *ht_status_code = NULL;
 GHashTable *ht_unique_visitors = NULL;
 GHashTable *ht_unique_vis = NULL;
+GHashTable *ht_unique_ips = NULL;
 
 static GHashTable *
 new_ht (GDestroyNotify d1, GDestroyNotify d2)
@@ -99,6 +100,7 @@ init_storage (void)
   ht_status_code = new_ht (g_free, g_free);
   ht_hosts = new_ht (g_free, g_free);
   ht_unique_vis = new_ht (g_free, g_free);
+  ht_unique_ips = new_ht (g_free, g_free);
   ht_referrers = new_ht (g_free, g_free);
   ht_unique_visitors = new_ht (g_free, g_free);
 
@@ -133,6 +135,7 @@ free_storage (void)
   g_hash_table_destroy (ht_requests_static);
   g_hash_table_destroy (ht_status_code);
   g_hash_table_destroy (ht_unique_vis);
+  g_hash_table_destroy (ht_unique_ips);
   g_hash_table_destroy (ht_unique_visitors);
 }
 

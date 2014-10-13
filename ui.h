@@ -49,6 +49,7 @@
 #define T_UNIQUE404  "Unique 404"
 #define T_UNIQUE_FIL "Unique Files"
 #define T_UNIQUE_VIS "Unique Visitors"
+#define T_UNIQUE_IPS "Unique Ips"
 
 /* spinner label format */
 #define SPIN_FMT "%s"

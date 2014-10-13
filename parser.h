@@ -51,6 +51,7 @@ typedef struct GLog_
   unsigned int invalid;
   unsigned int offset;
   unsigned int process;
+  unsigned int ips;
   unsigned long long resp_size;
   unsigned short piping;
   GLogItem *items;

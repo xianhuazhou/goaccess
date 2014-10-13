@@ -343,6 +343,7 @@ print_json_summary (FILE * fp, GLog * logger)
   /* general statistics info */
   fprintf (fp, "\t\t\"date_time\": \"%s\",\n", now);
   fprintf (fp, "\t\t\"total_requests\": %d,\n", logger->process);
+  fprintf (fp, "\t\t\"unique_ips\": %d,\n", get_ht_size (ht_unique_ips));
   fprintf (fp, "\t\t\"unique_visitors\": %d,\n",
            get_ht_size (ht_unique_visitors));
   fprintf (fp, "\t\t\"referrers\": %d,\n", get_ht_size (ht_referrers));
